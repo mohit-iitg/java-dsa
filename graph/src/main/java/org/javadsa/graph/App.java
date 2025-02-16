@@ -30,5 +30,10 @@ public class App
         graph.printGraph();
 
         graph.dfs();
+
+        Node<Integer> searchNode = new Node<>(6);
+        System.out.println("Searching for node "+searchNode);
+        boolean found = graph.dfsSearchNode(searchNode);
+        System.out.print("Node found: " + found);
     }
 }

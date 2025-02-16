@@ -9,5 +9,5 @@ public interface GraphIntf<T> {
     void addEdge(T from, T to);
     void printGraph();
     void dfs();
-//    void dfsSearchNode(T node);
+    boolean dfsSearchNode(T node);
 }

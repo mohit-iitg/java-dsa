@@ -67,6 +67,33 @@ public class GraphAdjList<T> implements GraphIntf<T> {
         }
     }
 
+    @Override
+    public boolean dfsSearchNode(T node) {
+        Set<T> visited = new HashSet<>();
+        boolean foundNode = false;
+        for(Map.Entry<T, List<T>> entry : this.adjList.entrySet()) {
+            if(!visited.contains(entry.getKey())) {
+                foundNode |= dfsSearchHelper(entry.getKey(), visited, node);
+            }
+        }
+        return foundNode;
+    }
+
+    private boolean dfsSearchHelper(T initNode, Set<T> visited, T targetNode) {
+        if(visited.contains(initNode)) {
+            return false;
+        }
+        visited.add(initNode);
+        if(targetNode.equals(initNode)) {
+            return true;
+        }
+        boolean foundNode = false;
+        for(T node : this.adjList.get(initNode)) {
+            foundNode |= dfsSearchHelper(node, visited, targetNode);
+        }
+        return foundNode;
+    }
+
     private void dfsHelper(T initNode, Set<T> visited) {
         if(visited.contains(initNode)) {
             return;

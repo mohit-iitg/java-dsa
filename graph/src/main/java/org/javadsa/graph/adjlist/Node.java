@@ -18,7 +18,17 @@ public class Node<T> implements GraphNode<T>{
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Node)) {
+            return false;
+        }
+        Node<T> node = (Node<T>)obj;
+        return node.getValue().equals(this.getValue());
+    }
+
+    @Override
     public String toString() {
         return '('+val.toString()+')';
     }
+
 }
