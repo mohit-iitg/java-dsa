@@ -1,4 +1,4 @@
-package org.javadsa;
+package org.javadsa.graph;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

@@ -7,7 +7,7 @@
     <artifactId>java-dsa</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.javadsa</groupId>
+  <groupId>org.javadsa.graph</groupId>
   <artifactId>graph</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>graph</name>
