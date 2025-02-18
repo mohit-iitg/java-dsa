@@ -4,6 +4,9 @@ import org.javadsa.graph.Edge;
 import org.javadsa.graph.GraphIntf;
 import org.javadsa.graph.Node;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class GraphAdjMat<T> implements GraphIntf<T> {
     private int nodesCount;
     private Node<T>[] nodes;
@@ -36,9 +39,9 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         boolean[] visited = new boolean[this.nodesCount];
         for(int i=0;i<nodesCount;i++) {
             for(int j=0;j<nodesCount;j++) {
-                if(this.adjMat[i][j] != null && !visited[this.adjMat[i][j].getFrom()]) {
+                if(this.adjMat[i][j] != null && !visited[i]) {
                     System.out.print("Start: ");
-                    dfsHelper(this.adjMat[i][j].getFrom(), visited);
+                    dfsHelper(i, visited);
                     System.out.println();
                 }
             }
@@ -53,7 +56,7 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         System.out.print(this.nodes[nodeIdx]+" -> ");
         for(int i=0;i<this.adjMat[nodeIdx].length;i++) {
             if(this.adjMat[nodeIdx][i] != null) {
-                dfsHelper(this.adjMat[nodeIdx][i].getTo(), visited);
+                dfsHelper(i, visited);
             }
         }
     }
@@ -65,7 +68,31 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
 
     @Override
     public void bfs() {
+        boolean[] visited = new boolean[this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            for(int j=0;j<this.nodesCount;j++) {
+                if(this.adjMat[i][j] != null && !visited[i]) {
+                    System.out.print("Start: ");
+                    bfsHelper(i, visited);
+                    System.out.println();
+                }
+            }
+        }
+    }
 
+    private void bfsHelper(int nodeIdx, boolean[] visited) {
+        Deque<Integer> q = new ArrayDeque<>();
+        q.add(nodeIdx);
+        while(!q.isEmpty()) {
+            Integer currIdx = q.remove();
+            visited[currIdx] = true;
+            System.out.print(this.nodes[currIdx]+" -> ");
+            for(int i=0;i<this.nodesCount;i++) {
+                if(this.adjMat[currIdx][i] != null && !visited[i]) {
+                    q.add(i);
+                }
+            }
+        }
     }
 
     @Override

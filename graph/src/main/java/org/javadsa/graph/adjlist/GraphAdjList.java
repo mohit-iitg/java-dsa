@@ -86,7 +86,32 @@ public class GraphAdjList<T> implements GraphIntf<T> {
 
     @Override
     public void bfs() {
+        Set<Node<T>> visited = new HashSet<>();
+        for(Map.Entry<Node<T>, List<Node<T>>> entry : this.adjList.entrySet()) {
+            if(!visited.contains(entry.getKey())) {
+                System.out.print("Start: ");
+                bfsHelper(entry.getKey(), visited);
+                System.out.println();
+            }
+        }
+    }
 
+    private void bfsHelper(Node<T> node, Set<Node<T>> visited) {
+        Deque<Node<T>> q = new ArrayDeque<>();
+        q.add(node);
+        while(!q.isEmpty()) {
+            Node<T> curr = q.remove();
+            System.out.print(curr+" -> ");
+            visited.add(curr);
+            List<Node<T>> list = this.adjList.get(curr);
+            if(list != null) {
+                for(Node<T> neighbour : list) {
+                    if(!visited.contains(neighbour)) {
+                        q.add(neighbour);
+                    }
+                }
+            }
+        }
     }
 
     @Override

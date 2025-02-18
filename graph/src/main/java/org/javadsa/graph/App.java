@@ -32,13 +32,17 @@ public class App
 
         System.out.println("Adjacency list graph: ");
         GraphIntf<Integer> graphList = new GraphAdjList<>(nodesCount, nodes, edges);
-
+        System.out.println("DFS: ");
         graphList.dfs();
+        System.out.println("BFS: ");
+        graphList.bfs();
 
 
         System.out.println("Adjacency matrix graph: ");
         GraphIntf<Integer> graphMat = new GraphAdjMat<>(nodesCount, nodes, edges);
-
+        System.out.println("DFS: ");
         graphMat.dfs();
+        System.out.println("BFS: ");
+        graphMat.bfs();
     }
 }
