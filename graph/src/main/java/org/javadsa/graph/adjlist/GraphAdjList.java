@@ -1,107 +1,96 @@
 package org.javadsa.graph.adjlist;
 
+import org.javadsa.graph.Edge;
 import org.javadsa.graph.GraphIntf;
+import org.javadsa.graph.Node;
 
 import java.util.*;
 
 public class GraphAdjList<T> implements GraphIntf<T> {
-    private Map<T, List<T>> adjList;
+    private int nodesCount;
+    private Node<T>[] nodes;
+    private Edge[] edges;
+    private Map<Integer, Node<T>> indexToNode;
 
-    public GraphAdjList() {
+    private Map<Node<T>, List<Node<T>>> adjList;
+
+
+    public GraphAdjList(int nodesCount, Node<T>[] nodes, Edge[] edges) {
+        this.nodesCount = nodesCount;
+        this.nodes = nodes;
+        this.edges = edges;
         this.adjList = new HashMap<>();
-    }
-
-    private void printList(List<T> list) {
-        for(T node : list) {
-            System.out.print(node + " -> ");
+        this.indexToNode = new HashMap<>();
+        for(Node<T> node : nodes){
+            this.indexToNode.put(node.getIndex(), node);
+        }
+        for (Edge edge : edges) {
+            if(!this.indexToNode.containsKey(edge.getFrom()) || !this.indexToNode.containsKey(edge.getTo())) {
+                continue;
+            }
+            if(!this.adjList.containsKey(this.indexToNode.get(edge.getFrom()))) {
+                List<Node<T>> arrList = new ArrayList<>();
+                arrList.add(this.indexToNode.get(edge.getTo()));
+                this.adjList.put(this.indexToNode.get(edge.getFrom()), arrList);
+            } else {
+                List<Node<T>> newList = this.adjList.get(this.indexToNode.get(edge.getFrom()));
+                newList.add(this.indexToNode.get(edge.getTo()));
+                this.adjList.put(this.indexToNode.get(edge.getFrom()), newList);
+            }
+//            System.out.println("Updated list of "+this.indexToNode.get(edge.getFrom())+" to: "+this.adjList.get(this.indexToNode.get(edge.getFrom())));
         }
     }
 
     @Override
-    public T addNode(T node) {
-        this.adjList.put(node, new ArrayList<>());
-        return node;
+    public Node<T>[] getNodes() {
+        return this.nodes;
     }
 
     @Override
-    public void addNodeWithEdges(T node, List<T> edges) {
-        if(edges.isEmpty()) {
-            this.addNode(node);
-        }
-        this.adjList.put(node, edges);
-    }
-
-    @Override
-    public T addNode() {
-        // NOT IMPLEMENTED FOR ADJ LIST GRAPH
-        return null;
-    }
-
-    @Override
-    public void addEdge(T from, T to) {
-        if(this.adjList.containsKey(from)) {
-            List<T> neighbours = this.adjList.get(from);
-            neighbours.add(to);
-        } else {
-            this.addNodeWithEdges(from, Collections.singletonList(to));
-        }
-    }
-
-    @Override
-    public void printGraph() {
-        for(Map.Entry<T, List<T>> entry : this.adjList.entrySet()) {
-            System.out.print(entry.getKey() + " -> ");
-            this.printList(entry.getValue());
-            System.out.println();
-        }
+    public Edge[] getEdges() {
+        return this.edges;
     }
 
     @Override
     public void dfs() {
-        Set<T> visited = new HashSet<>();
-        for(Map.Entry<T, List<T>> entry : this.adjList.entrySet()) {
+        Set<Node<T>> visited = new HashSet<>();
+
+        for(Map.Entry<Node<T>, List<Node<T>>> entry : this.adjList.entrySet()) {
             if(!visited.contains(entry.getKey())) {
-                System.out.print("\nStarting: ");
+                System.out.print("Start: ");
                 dfsHelper(entry.getKey(), visited);
+                System.out.println();
             }
+        }
+    }
+
+    private void dfsHelper(Node<T> node, Set<Node<T>> visited) {
+        if(visited.contains(node)) {
+            return;
+        }
+        visited.add(node);
+        System.out.print(node + " -> ");
+        List<Node<T>> list = this.adjList.get(node);
+        if(list == null) {
+            return;
+        }
+        for(Node<T> neighbour : list) {
+            dfsHelper(neighbour, visited);
         }
     }
 
     @Override
-    public boolean dfsSearchNode(T node) {
-        Set<T> visited = new HashSet<>();
-        boolean foundNode = false;
-        for(Map.Entry<T, List<T>> entry : this.adjList.entrySet()) {
-            if(!visited.contains(entry.getKey())) {
-                foundNode |= dfsSearchHelper(entry.getKey(), visited, node);
-            }
-        }
-        return foundNode;
+    public Node<T> dfsSearchByValue(T value) {
+        return null;
     }
 
-    private boolean dfsSearchHelper(T initNode, Set<T> visited, T targetNode) {
-        if(visited.contains(initNode)) {
-            return false;
-        }
-        visited.add(initNode);
-        if(targetNode.equals(initNode)) {
-            return true;
-        }
-        boolean foundNode = false;
-        for(T node : this.adjList.get(initNode)) {
-            foundNode |= dfsSearchHelper(node, visited, targetNode);
-        }
-        return foundNode;
+    @Override
+    public void bfs() {
+
     }
 
-    private void dfsHelper(T initNode, Set<T> visited) {
-        if(visited.contains(initNode)) {
-            return;
-        }
-        System.out.print(initNode + " -> ");
-        visited.add(initNode);
-        for(T node : this.adjList.get(initNode)) {
-            dfsHelper(node, visited);
-        }
+    @Override
+    public Node<T> bfsSearchByValue(T value) {
+        return null;
     }
 }
