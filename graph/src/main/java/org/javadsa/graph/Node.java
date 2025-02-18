@@ -36,6 +36,11 @@ public class Node<T> {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public String toString() {
         return "{Val: "+this.value+", Wt: "+this.wt+", Idx: "+this.index+"}";
     }

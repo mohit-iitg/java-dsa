@@ -11,17 +11,32 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
     private int nodesCount;
     private Node<T>[] nodes;
     private Edge[] edges;
-
+    private boolean isDirected;
     private Edge[][] adjMat;
 
-    public GraphAdjMat(int nodesCount, Node<T>[] nodes, Edge[] edges) {
+    public GraphAdjMat(int nodesCount, Node<T>[] nodes, Edge[] edges, boolean isDirected) {
         this.nodesCount = nodesCount;
         this.nodes = nodes;
         this.edges = edges;
         this.adjMat = new Edge[nodesCount][nodesCount];
-        for (Edge edge : edges) {
-            this.adjMat[edge.getFrom()][edge.getTo()] = edge;
+        this.isDirected = isDirected;
+
+        if(this.isDirected) {
+            for (Edge edge : edges) {
+                this.adjMat[edge.getFrom()][edge.getTo()] = edge;
+            }
+        } else {
+            for (Edge edge : edges) {
+                this.adjMat[edge.getFrom()][edge.getTo()] = edge;
+                this.adjMat[edge.getTo()][edge.getFrom()] = edge;
+            }
         }
+
+    }
+
+    @Override
+    public boolean isDirected() {
+        return this.isDirected;
     }
 
     @Override
@@ -99,4 +114,10 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
     public Node<T> bfsSearchByValue(T value) {
         return null;
     }
+
+    @Override
+    public boolean containsCycle() {
+        return false;
+    }
+
 }
