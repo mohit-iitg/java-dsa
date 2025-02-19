@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/arrays/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/arrays/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dsautil/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dsautil/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/graph/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/graph/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/linkedlist/src/main/java" charset="UTF-8" />

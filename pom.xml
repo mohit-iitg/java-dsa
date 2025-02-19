@@ -16,5 +16,6 @@
     <module>trees</module>
     <module>strings</module>
     <module>math</module>
+    <module>dsautil</module>
   </modules>
 </project>
