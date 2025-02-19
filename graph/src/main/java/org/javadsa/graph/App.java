@@ -21,7 +21,7 @@ public class App
         Edge[] edges = new Edge[8];
         Edge edge0 = new Edge(0, 1, 10);
         Edge edge1 = new Edge(1, 4, 1);
-        Edge edge2 = new Edge(4, 1, 2);
+        Edge edge2 = new Edge(4, 3, 2);
         Edge edge3 = new Edge(2, 5, 5);
         Edge edge4 = new Edge(2, 0, 10);
         Edge edge5 = new Edge(3, 0, 10);
@@ -31,7 +31,7 @@ public class App
         edges[4] = edge4; edges[5] = edge5; edges[6] = edge6; edges[7] = edge7;
 
         System.out.println("Adjacency list graph: ");
-        GraphIntf<Integer> graphList = new GraphAdjList<>(nodesCount, nodes, edges, false);
+        GraphIntf<Integer> graphList = new GraphAdjList<>(nodesCount, nodes, edges, true);
         System.out.println("DFS: ");
         graphList.dfs();
         System.out.println("BFS: ");
@@ -46,5 +46,7 @@ public class App
         graphMat.dfs();
         System.out.println("BFS: ");
         graphMat.bfs();
+
+        System.out.println("The graph contains cycle: "+graphMat.containsCycle());
     }
 }
