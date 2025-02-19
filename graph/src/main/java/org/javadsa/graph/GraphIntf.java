@@ -11,4 +11,22 @@ public interface GraphIntf<T> {
     public void bfs();
     public Node<T> bfsSearchByValue(T value);
     public boolean containsCycle();
+//    // Using minimum weight edge adding to the set to get the MST
+//    public int kruskalMst();
+//    // Using the edges currently available to select the smallest weight edge.
+//    public int primMst();
+//    // Single source shortest path to all the other nodes.
+//    // Cannot work in case we have a negative weight cycle
+//    public Integer[] dijkstras(Node<T> node);
+//    // Single source shortest path to all other nodes.
+//    // Can detect a negative weight cycle
+//    public Integer[] bellmanFord(Node<T> node);
+//    // All source shortest path algorithm
+//    public Integer[][] floydWarshall();
+//    // Detect all strongly connected components
+//    public void tarjansScc();
+//    // Detect all strongly connected components
+//    public void kosarajuScc();
+//    // Topological sorting
+//    public Integer[] topologicalSort();
 }

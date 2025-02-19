@@ -15,11 +15,14 @@ public class DisjointSet {
     public int find(int idx) {
         int initIdx = idx;
         while(this.parent[idx] != -1) {
+//            System.out.println("Curr idx: "+idx+" parent arr: "+this.parent);
             idx = this.parent[idx];
         }
         // to wrap around for better time complexity
         // each node should be directly mapped to the root
-        this.parent[initIdx] = idx;
+        if(idx != initIdx) {
+            this.parent[initIdx] = idx;
+        }
         return idx;
     }
 
