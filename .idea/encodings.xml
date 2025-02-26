@@ -15,6 +15,8 @@
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/strings/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/strings/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/threading/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/threading/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/trees/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/trees/src/main/resources" charset="UTF-8" />
   </component>

@@ -17,5 +17,6 @@
     <module>strings</module>
     <module>math</module>
     <module>dsautil</module>
+    <module>threading</module>
   </modules>
 </project>
