@@ -13,8 +13,8 @@ public interface GraphIntf<T> {
     public boolean containsCycle();
 //    // Using minimum weight edge adding to the set to get the MST
 //    public int kruskalMst();
-//    // Using the edges currently available to select the smallest weight edge.
-//    public int primMst();
+    // Using the edges currently available to select the smallest weight edge.
+    public Double primMst();
 //    // Single source shortest path to all the other nodes.
 //    // Cannot work in case we have a negative weight cycle
 //    public Integer[] dijkstras(Node<T> node);

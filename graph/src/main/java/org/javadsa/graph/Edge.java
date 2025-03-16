@@ -3,19 +3,19 @@ package org.javadsa.graph;
 public class Edge {
     private int from;
     private int to;
-    private int wt;
+    private Double wt;
 
-    public Edge(int from, int to, int wt) {
+    public Edge(int from, int to, Double wt) {
         this.from = from;
         this.to = to;
         this.wt = wt;
     }
 
-    public int getWt() {
+    public Double getWt() {
         return wt;
     }
 
-    public void setWt(int wt) {
+    public void setWt(Double wt) {
         this.wt = wt;
     }
 
