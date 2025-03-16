@@ -30,14 +30,15 @@ public class GraphAdjList<T> implements GraphIntf<T> {
                 if(!this.indexToNode.containsKey(edge.getFrom()) || !this.indexToNode.containsKey(edge.getTo())) {
                     continue;
                 }
-                if(!this.adjList.containsKey(this.indexToNode.get(edge.getFrom()))) {
+                Node<T> fromNode = this.indexToNode.get(edge.getFrom());
+                if(!this.adjList.containsKey(fromNode)) {
                     List<Edge> arrList = new ArrayList<>();
                     arrList.add(edge);
-                    this.adjList.put(this.indexToNode.get(edge.getFrom()), arrList);
+                    this.adjList.put(fromNode, arrList);
                 } else {
-                    List<Edge> newList = this.adjList.get(this.indexToNode.get(edge.getFrom()));
+                    List<Edge> newList = this.adjList.get(fromNode);
                     newList.add(edge);
-                    this.adjList.put(this.indexToNode.get(edge.getFrom()), newList);
+                    this.adjList.put(fromNode, newList);
                 }
             }
         } else {
@@ -46,26 +47,29 @@ public class GraphAdjList<T> implements GraphIntf<T> {
                     continue;
                 }
                 List<Edge> fromList, toList;
-                if(!this.adjList.containsKey(this.indexToNode.get(edge.getFrom())) || !this.adjList.containsKey(this.indexToNode.get(edge.getTo()))) {
-                    if(!this.adjList.containsKey(this.indexToNode.get(edge.getFrom()))) {
+                Node<T> fromNode = this.indexToNode.get(edge.getFrom());
+                Node<T> toNode = this.indexToNode.get(edge.getTo());
+                if(!this.adjList.containsKey(fromNode) || !this.adjList.containsKey(toNode)) {
+                    if(!this.adjList.containsKey(fromNode)) {
                         fromList = new ArrayList<>();
                     } else {
-                        fromList = this.adjList.get(this.indexToNode.get(edge.getFrom()));
+                        fromList = this.adjList.get(fromNode);
                     }
-                    if(!this.adjList.containsKey(this.indexToNode.get(edge.getTo()))) {
+                    if(!this.adjList.containsKey(toNode)) {
                         toList = new ArrayList<>();
                     } else {
-                        toList = this.adjList.get(this.indexToNode.get(edge.getTo()));
+                        toList = this.adjList.get(toNode);
                     }
                 } else {
-                    fromList = this.adjList.get(this.indexToNode.get(edge.getFrom()));
-                    toList = this.adjList.get(this.indexToNode.get(edge.getTo()));
+                    fromList = this.adjList.get(fromNode);
+                    toList = this.adjList.get(toNode);
                 }
                 fromList.add(edge);
-                this.adjList.put(this.indexToNode.get(edge.getFrom()), fromList);
+                this.adjList.put(fromNode, fromList);
 
-                toList.add(edge);
-                this.adjList.put(this.indexToNode.get(edge.getTo()), toList);
+                Edge newEdge = new Edge(edge.getTo(), edge.getFrom(), edge.getWt());
+                toList.add(newEdge);
+                this.adjList.put(toNode, toList);
             }
         }
 
