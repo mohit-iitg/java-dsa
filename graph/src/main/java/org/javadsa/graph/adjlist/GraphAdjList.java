@@ -3,6 +3,7 @@ package org.javadsa.graph.adjlist;
 import org.javadsa.graph.Edge;
 import org.javadsa.graph.GraphIntf;
 import org.javadsa.graph.Node;
+import org.javadsa.util.disjointset.DisjointSet;
 
 import java.util.*;
 
@@ -168,6 +169,43 @@ public class GraphAdjList<T> implements GraphIntf<T> {
         } else {
             return this.containsCycleUndirected();
         }
+    }
+
+    @Override
+    public Double kruskalMst() {
+        // Assuming MST is not applicable for Directed graphs
+        // For it to be applicable to directed graph, we need to have one node
+        // such that all the other vertices are reachable from that to start algorithm from.
+        if(this.isDirected) {
+            System.out.println("MST only implemented for undirected graph");
+            return Double.NEGATIVE_INFINITY;
+        }
+        // We need the graph to be connected first
+        if(!this.isConnected()) {
+            System.out.println("MST only implemented for connected graph");
+            return Double.NEGATIVE_INFINITY;
+        }
+
+        // In Kruskal's MST Algorithm, we need to sort the edges based on the weight
+        // Keep on selecting the edges with the smallest weight unless the edge
+        // is in between the nodes in same disjoint set
+        Double mstValue = 0.0;
+        DisjointSet ds = new DisjointSet(this.nodesCount);
+        Arrays.sort(this.edges);
+//        System.out.println("Sorted list of edges: ");
+//        for(Edge edge : this.edges) {
+//            System.out.printf("%f, ", edge.getWt());
+//        }
+        for(int i=0;i<this.edges.length;i++) {
+            int from = this.edges[i].getFrom();
+            int to = this.edges[i].getTo();
+            if(ds.find(from) != ds.find(to)) {
+                ds.union(from, to);
+                mstValue+=this.edges[i].getWt();
+            }
+        }
+
+        return mstValue;
     }
 
     @Override

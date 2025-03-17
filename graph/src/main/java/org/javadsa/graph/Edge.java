@@ -1,6 +1,9 @@
 package org.javadsa.graph;
 
-public class Edge {
+import java.util.Comparator;
+import java.util.Objects;
+
+public class Edge implements Comparable {
     private int from;
     private int to;
     private Double wt;
@@ -33,5 +36,18 @@ public class Edge {
 
     public void setFrom(int from) {
         this.from = from;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(!(o instanceof Edge edge)) {
+            return -1;
+        }
+        if(this.getWt() < edge.getWt()) {
+            return -1;
+        } else if(Objects.equals(this.getWt(), edge.getWt())) {
+            return 0;
+        }
+        return 1;
     }
 }

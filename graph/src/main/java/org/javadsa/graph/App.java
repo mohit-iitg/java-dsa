@@ -40,6 +40,7 @@ public class App
         System.out.println("The graph contains cycle: "+graphList.containsCycle());
 
         System.out.println("Prim's MST has value: "+graphList.primMst());
+        System.out.println("Kruskals's MST has value: "+graphList.kruskalMst());
 
 
         System.out.println("Adjacency matrix graph: ");
@@ -52,5 +53,6 @@ public class App
         System.out.println("The graph contains cycle: "+graphMat.containsCycle());
 
         System.out.println("Prim's MST has value: "+graphMat.primMst());
+        System.out.println("Kruskals's MST has value: "+graphMat.kruskalMst());
     }
 }
