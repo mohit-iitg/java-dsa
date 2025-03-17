@@ -3,11 +3,9 @@ package org.javadsa.graph.adjmat;
 import org.javadsa.graph.Edge;
 import org.javadsa.graph.GraphIntf;
 import org.javadsa.graph.Node;
+import org.javadsa.util.disjointset.DisjointSet;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class GraphAdjMat<T> implements GraphIntf<T> {
     private int nodesCount;
@@ -131,6 +129,109 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         } else {
             return this.containsCycleUndirected();
         }
+    }
+
+    @Override
+    public Double kruskalMst() {
+        // Assuming MST is not applicable for Directed graphs
+        // For it to be applicable to directed graph, we need to have one node
+        // such that all the other vertices are reachable from that to start algorithm from.
+        if(this.isDirected) {
+            System.out.println("MST only implemented for undirected graph");
+            return Double.NEGATIVE_INFINITY;
+        }
+        // We need the graph to be connected first
+        if(!this.isConnected()) {
+            System.out.println("MST only implemented for connected graph");
+            return Double.NEGATIVE_INFINITY;
+        }
+
+        // In Kruskal's MST Algorithm, we need to sort the edges based on the weight
+        // Keep on selecting the edges with the smallest weight unless the edge
+        // is in between the nodes in same disjoint set
+        Double mstValue = 0.0;
+        DisjointSet ds = new DisjointSet(this.nodesCount);
+        Arrays.sort(this.edges);
+//        System.out.println("Sorted list of edges: ");
+//        for(Edge edge : this.edges) {
+//            System.out.printf("%f, ", edge.getWt());
+//        }
+        for(int i=0;i<this.edges.length;i++) {
+            int from = this.edges[i].getFrom();
+            int to = this.edges[i].getTo();
+            if(ds.find(from) != ds.find(to)) {
+                ds.union(from, to);
+                mstValue+=this.edges[i].getWt();
+            }
+        }
+
+        return mstValue;
+    }
+
+    @Override
+    public Double primMst() {
+        // Assuming MST is not applicable for Directed graphs
+        // For it to be applicable to directed graph, we need to have one node
+        // such that all the other vertices are reachable from that to start algorithm from.
+        if(this.isDirected) {
+            System.out.println("MST only implemented for undirected graph");
+            return Double.NEGATIVE_INFINITY;
+        }
+        // We need the graph to be connected first
+        if(!this.isConnected()) {
+            System.out.println("MST only implemented for connected graph");
+            return Double.NEGATIVE_INFINITY;
+        }
+        // In Prim's algorithm, we start from a vertex and assume the weight of that vertex to be 0
+        // We calculate the weight of the vertices connected to the veritces which are in the MST
+        // We choose the vertex with the least weight
+        Double[] mstWt = new Double[this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            mstWt[i] = Double.POSITIVE_INFINITY;
+        }
+        boolean[] inMST = new boolean[this.nodesCount];
+        int[] parent = new int[this.nodesCount];
+        int inMSTCount = 0;
+        mstWt[0] = 0.0; parent[0] = -1;
+        Double mstValue = 0.0;
+        while(inMSTCount < this.nodesCount) {
+            // Select minimum wt vertex next
+            int minWtIdx = -1;
+            Double minWt = Double.POSITIVE_INFINITY;
+            for(int i=0;i<this.nodesCount;i++) {
+                if(!inMST[i] && mstWt[i] < minWt) {
+                    minWtIdx = i;
+                    minWt = mstWt[i];
+                }
+            }
+            // Add index to MST
+            inMST[minWtIdx] = true;
+            inMSTCount++;
+            mstValue+=mstWt[minWtIdx];
+            // Relax weights based on added vertex
+            for(int i=0;i<this.nodesCount;i++) {
+                if(!inMST[i] && this.adjMat[minWtIdx][i] != null && this.adjMat[minWtIdx][i].getWt() < mstWt[i]) {
+                    mstWt[i] = this.adjMat[minWtIdx][i].getWt();
+                    parent[i] = minWtIdx;
+                }
+            }
+        }
+        System.out.print("Parent indices for MST: ");
+        for (int parentIdx : parent) {
+            System.out.printf("%d, ", parentIdx);
+        }
+        return mstValue;
+    }
+    // Assuming the graph is undirected, check whether the graph is connected
+    private boolean isConnected() {
+        boolean[] visited = new boolean[this.nodesCount];
+        this.dfsHelper(0, visited);
+        for(boolean isVisited : visited) {
+            if(!isVisited) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean containsCycleDirected() {
