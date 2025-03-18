@@ -50,4 +50,9 @@ public class Edge implements Comparable {
         }
         return 1;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Edge(from=%d, to=%d, wt=%.1f)", this.from, this.to, this.wt);
+    }
 }

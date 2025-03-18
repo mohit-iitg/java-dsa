@@ -265,6 +265,48 @@ public class GraphAdjList<T> implements GraphIntf<T> {
     }
 
     @Override
+    public Double[] dijkstras(Node<T> node) {
+        Double[] costs = new Double[this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            costs[i] = Double.POSITIVE_INFINITY;
+        }
+        // If the graph contains a negative wt cycle, distance cannot be found
+        if(containsNegativeCycle()) {
+            costs[0] = Double.NEGATIVE_INFINITY;
+            return costs;
+        }
+
+        // The algorithm is similar to Prim's algorithm, we consider the
+        // overall cost of the complete path for each node
+        int index = node.getIndex();
+        boolean[] included = new boolean[this.nodesCount];
+        costs[index] = 0.0;
+
+        for(int i=1;i<this.nodesCount;i++) {
+            // Select the node with the smallest cost
+            int minCostIndex = -1;
+            Double minCost = Double.POSITIVE_INFINITY;
+            for(int j=0;j<this.nodesCount;j++) {
+                if(!included[j] && minCost > costs[j]) {
+                    minCostIndex = j;
+                    minCost = costs[j];
+                }
+            }
+            included[minCostIndex] = true;
+
+            // Relax the edges wrt the new vertex
+            List<Edge> edges = this.adjList.get(this.indexToNode.get(minCostIndex));
+            for(Edge edge : edges) {
+                if(!included[edge.getTo()] && costs[edge.getFrom()] + edge.getWt() < costs[edge.getTo()]) {
+                    costs[edge.getTo()] = costs[edge.getFrom()] + edge.getWt();
+                }
+            }
+        }
+
+        return costs;
+    }
+
+    @Override
     public Double[] bellmanFord(Node<T> node) {
         // The idea is basically to maintain the total cost of reaching
         // a node from the starting node by relaxing the cost on processing
