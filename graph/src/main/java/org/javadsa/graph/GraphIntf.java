@@ -17,7 +17,7 @@ public interface GraphIntf<T> {
     public Double primMst();
 //    // Single source shortest path to all the other nodes.
 //    // Cannot work in case we have a negative weight cycle
-//    public Integer[] dijkstras(Node<T> node);
+    public Double[] dijkstras(Node<T> node);
     // Single source shortest path to all other nodes.
     // Can detect a negative weight cycle
     public Double[] bellmanFord(Node<T> node);
