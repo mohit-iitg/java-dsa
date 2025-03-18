@@ -12,7 +12,7 @@ public interface GraphIntf<T> {
     public Node<T> bfsSearchByValue(T value);
     public boolean containsCycle();
 //    // Using minimum weight edge adding to the set to get the MST
-//    public int kruskalMst();
+    public Double kruskalMst();
     // Using the edges currently available to select the smallest weight edge.
     public Double primMst();
 //    // Single source shortest path to all the other nodes.

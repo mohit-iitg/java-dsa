@@ -68,5 +68,6 @@ public class App
         }
         System.out.println();
         System.out.println("Contains negative wt cycle "+graphMat.containsNegativeCycle());
+
     }
 }
