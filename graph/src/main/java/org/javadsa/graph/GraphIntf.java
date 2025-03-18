@@ -18,9 +18,11 @@ public interface GraphIntf<T> {
 //    // Single source shortest path to all the other nodes.
 //    // Cannot work in case we have a negative weight cycle
 //    public Integer[] dijkstras(Node<T> node);
-//    // Single source shortest path to all other nodes.
-//    // Can detect a negative weight cycle
-//    public Integer[] bellmanFord(Node<T> node);
+    // Single source shortest path to all other nodes.
+    // Can detect a negative weight cycle
+    public Double[] bellmanFord(Node<T> node);
+    // Check negative wt cycle
+    public boolean containsNegativeCycle();
 //    // All source shortest path algorithm
 //    public Integer[][] floydWarshall();
 //    // Detect all strongly connected components

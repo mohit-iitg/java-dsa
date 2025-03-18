@@ -41,6 +41,13 @@ public class App
 
         System.out.println("Prim's MST has value: "+graphList.primMst());
         System.out.println("Kruskals's MST has value: "+graphList.kruskalMst());
+        Double[] costsList = graphList.bellmanFord(node0);
+        System.out.println("Shortest path from node 0: ");
+        for(Double cost : costsList) {
+            System.out.printf("%.1f, ", cost);
+        }
+        System.out.println();
+        System.out.println("Contains negative wt cycle "+graphList.containsNegativeCycle());
 
 
         System.out.println("Adjacency matrix graph: ");
@@ -54,5 +61,13 @@ public class App
 
         System.out.println("Prim's MST has value: "+graphMat.primMst());
         System.out.println("Kruskals's MST has value: "+graphMat.kruskalMst());
+        Double[] costsMat = graphList.bellmanFord(node0);
+        System.out.println("Shortest path from node 0: ");
+        for(Double cost : costsMat) {
+            System.out.printf("%.1f, ", cost);
+        }
+        System.out.println();
+        System.out.println("Contains negative wt cycle "+graphMat.containsNegativeCycle());
+
     }
 }

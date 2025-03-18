@@ -263,6 +263,57 @@ public class GraphAdjList<T> implements GraphIntf<T> {
         }
         return mstValue;
     }
+
+    @Override
+    public Double[] bellmanFord(Node<T> node) {
+        // The idea is basically to maintain the total cost of reaching
+        // a node from the starting node by relaxing the cost on processing
+        // each edge in the graph.
+        Double[] cost = new Double[this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            cost[i] = Double.POSITIVE_INFINITY;
+        }
+        // Starting with the node
+        int index = node.getIndex();
+        cost[index] = 0.0;
+        for(int i=0;i<this.nodesCount;i++) {
+            // Relax cost wih all the edges
+            for(Edge edge : this.edges) {
+                if(cost[edge.getFrom()] + edge.getWt() < cost[edge.getTo()]) {
+                    cost[edge.getTo()] = cost[edge.getFrom()] + edge.getWt();
+                }
+                if(!isDirected) {
+                    if(cost[edge.getTo()] + edge.getWt() < cost[edge.getFrom()]) {
+                        cost[edge.getFrom()] = cost[edge.getTo()] + edge.getWt();
+                    }
+                }
+            }
+        }
+        // Check one more time for negative cycles
+        for(Edge edge : this.edges) {
+            if(cost[edge.getFrom()] + edge.getWt() < cost[edge.getTo()]) {
+                cost[0] = Double.NEGATIVE_INFINITY;
+                break;
+            }
+            if(!isDirected) {
+                if(cost[edge.getTo()] + edge.getWt() < cost[edge.getFrom()]) {
+                    cost[0] = Double.NEGATIVE_INFINITY;
+                    break;
+                }
+            }
+        }
+        return cost;
+    }
+
+    @Override
+    public boolean containsNegativeCycle() {
+        if(bellmanFord(this.nodes[0])[0] == Double.NEGATIVE_INFINITY) {
+            return true;
+        }
+        return false;
+    }
+
+
     // Assuming the graph is undirected, check whether the graph is connected
     private boolean isConnected() {
         Set<Node<T>> visited = new HashSet<>();
