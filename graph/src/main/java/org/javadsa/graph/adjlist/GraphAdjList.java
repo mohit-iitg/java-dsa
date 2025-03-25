@@ -293,6 +293,7 @@ public class GraphAdjList<T> implements GraphIntf<T> {
                 }
             }
             included[minCostIndex] = true;
+
             System.out.println("minCostIndex: "+minCostIndex);
             // Relax the edges wrt the new vertex
             List<Edge> edges = this.adjList.get(this.indexToNode.get(minCostIndex));

@@ -54,7 +54,6 @@ public class App
             System.out.printf("%.1f, ", cost);
         }
         System.out.println();
-
         Double[][] apsp = graphList.floydWarshall();
         System.out.println("\n\nAll pairs shortest path: ");
         for(int i=0;i<apsp.length;i++) {
@@ -89,7 +88,6 @@ public class App
             System.out.printf("%.1f, ", cost);
         }
         System.out.println();
-
         apsp = graphMat.floydWarshall();
         System.out.println("\n\nAll pairs shortest path: ");
         for(int i=0;i<apsp.length;i++) {
