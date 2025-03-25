@@ -24,7 +24,7 @@ public interface GraphIntf<T> {
     // Check negative wt cycle
     public boolean containsNegativeCycle();
 //    // All source shortest path algorithm
-//    public Integer[][] floydWarshall();
+    public Double[][] floydWarshall();
 //    // Detect all strongly connected components
 //    public void tarjansScc();
 //    // Detect all strongly connected components

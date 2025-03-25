@@ -321,6 +321,56 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         return false;
     }
 
+    private Double[][] floydWarshallSetup() {
+        Double[][] dp = new Double[this.nodesCount][this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            for(int j=0;j<this.nodesCount;j++) {
+                if(this.adjMat[i][j] != null) {
+                    dp[i][j] = this.adjMat[i][j].getWt();
+                } else {
+                    dp[i][j] = Double.POSITIVE_INFINITY;
+                }
+            }
+        }
+        return dp;
+    }
+
+    private void checkNegativeCycles(Double[][] dp) {
+        // Consider nodes from 0, 1, ..., k-1
+        for(int k=0;k<this.nodesCount;k++) {
+            // Relax the distance from i to j via 0, 1, ..., k-1
+            for(int i=0;i<this.nodesCount;i++) {
+                for(int j=0;j<this.nodesCount;j++) {
+                    if(dp[i][j] > dp[i][k] + dp[k][j]) {
+                        dp[i][j] = Double.NEGATIVE_INFINITY;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public Double[][] floydWarshall() {
+        // setup phase
+        Double[][] dp = floydWarshallSetup();
+
+        // Consider nodes from 0, 1, ..., k-1
+        for(int k=0;k<this.nodesCount;k++) {
+            // Relax the distance from i to j via 0, 1, ..., k-1
+            for(int i=0;i<this.nodesCount;i++) {
+                for(int j=0;j<this.nodesCount;j++) {
+                    if(dp[i][j] > dp[i][k] + dp[k][j]) {
+                        dp[i][j] = dp[i][k] + dp[k][j];
+                    }
+                }
+            }
+        }
+
+        // Check for negative cycles
+        checkNegativeCycles(dp);
+        return dp;
+    }
+
     // Assuming the graph is undirected, check whether the graph is connected
     private boolean isConnected() {
         boolean[] visited = new boolean[this.nodesCount];

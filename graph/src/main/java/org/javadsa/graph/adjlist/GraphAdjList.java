@@ -293,12 +293,14 @@ public class GraphAdjList<T> implements GraphIntf<T> {
                 }
             }
             included[minCostIndex] = true;
-
+            System.out.println("minCostIndex: "+minCostIndex);
             // Relax the edges wrt the new vertex
             List<Edge> edges = this.adjList.get(this.indexToNode.get(minCostIndex));
-            for(Edge edge : edges) {
-                if(!included[edge.getTo()] && costs[edge.getFrom()] + edge.getWt() < costs[edge.getTo()]) {
-                    costs[edge.getTo()] = costs[edge.getFrom()] + edge.getWt();
+            if(edges != null) {
+                for (Edge edge : edges) {
+                    if (!included[edge.getTo()] && costs[edge.getFrom()] + edge.getWt() < costs[edge.getTo()]) {
+                        costs[edge.getTo()] = costs[edge.getFrom()] + edge.getWt();
+                    }
                 }
             }
         }
@@ -353,6 +355,60 @@ public class GraphAdjList<T> implements GraphIntf<T> {
             return true;
         }
         return false;
+    }
+
+    private void checkNegativeCycles(Double[][] dp) {
+        // Consider nodes from 0, 1, ..., k-1
+        for(int k=0;k<this.nodesCount;k++) {
+            // Relax the distance from i to j via 0, 1, ..., k-1
+            for(int i=0;i<this.nodesCount;i++) {
+                for(int j=0;j<this.nodesCount;j++) {
+                    if(dp[i][j] > dp[i][k] + dp[k][j]) {
+                        dp[i][j] = Double.NEGATIVE_INFINITY;
+                    }
+                }
+            }
+        }
+    }
+
+    private Double[][] floydWarshallSetup() {
+        Double[][] dp = new Double[this.nodesCount][this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            for(int j=0;j<this.nodesCount;j++) {
+                dp[i][j] = Double.POSITIVE_INFINITY;
+            }
+        }
+        for(Node<T> node:this.nodes) {
+            List<Edge> edges = this.adjList.get(node);
+            if(edges != null) {
+                for(Edge edge : edges) {
+                    dp[edge.getFrom()][edge.getTo()] = edge.getWt();
+                }
+            }
+        }
+        return dp;
+    }
+
+    @Override
+    public Double[][] floydWarshall() {
+        // Setup
+        Double[][] dp = floydWarshallSetup();
+
+        // Consider nodes from 0, 1, ..., k-1
+        for(int k=0;k<this.nodesCount;k++) {
+            // Relax the distance from i to j via 0, 1, ..., k-1
+            for(int i=0;i<this.nodesCount;i++) {
+                for(int j=0;j<this.nodesCount;j++) {
+                    if(dp[i][j] > dp[i][k] + dp[k][j]) {
+                        dp[i][j] = dp[i][k] + dp[k][j];
+                    }
+                }
+            }
+        }
+
+        // Check for negative cycles
+        checkNegativeCycles(dp);
+        return dp;
     }
 
 

@@ -24,7 +24,7 @@ public class App
         Edge edge2 = new Edge(4, 3, 12.0);
         Edge edge3 = new Edge(2, 5, 1.0);
         Edge edge4 = new Edge(2, 0, 15.0);
-        Edge edge5 = new Edge(3, 0, 10.0);
+        Edge edge5 = new Edge(3, 2, 10.0);
         Edge edge6 = new Edge(0, 5, 2.0);
         Edge edge7 = new Edge(3, 1, 10.0);
         edges[0] = edge0; edges[1] = edge1; edges[2] = edge2; edges[3] = edge3;
@@ -55,6 +55,15 @@ public class App
         }
         System.out.println();
 
+        Double[][] apsp = graphList.floydWarshall();
+        System.out.println("\n\nAll pairs shortest path: ");
+        for(int i=0;i<apsp.length;i++) {
+            for(int j=0;j<apsp[0].length;j++) {
+                System.out.print(apsp[i][j] + " ");
+            }
+            System.out.println();
+        }
+
 
         System.out.println("\n\nAdjacency matrix graph: ");
         GraphIntf<Integer> graphMat = new GraphAdjMat<>(nodesCount, nodes, edges, false);
@@ -80,5 +89,14 @@ public class App
             System.out.printf("%.1f, ", cost);
         }
         System.out.println();
+
+        apsp = graphMat.floydWarshall();
+        System.out.println("\n\nAll pairs shortest path: ");
+        for(int i=0;i<apsp.length;i++) {
+            for(int j=0;j<apsp[0].length;j++) {
+                System.out.print(apsp[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
