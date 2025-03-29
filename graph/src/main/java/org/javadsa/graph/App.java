@@ -31,7 +31,7 @@ public class App
         edges[4] = edge4; edges[5] = edge5; edges[6] = edge6; edges[7] = edge7;
 
         System.out.println("Adjacency list graph: ");
-        GraphIntf<Integer> graphList = new GraphAdjList<>(nodesCount, nodes, edges, false);
+        GraphIntf<Integer> graphList = new GraphAdjList<>(nodesCount, nodes, edges, true);
         System.out.println("DFS: ");
         graphList.dfs();
         System.out.println("BFS: ");
@@ -62,10 +62,11 @@ public class App
             }
             System.out.println();
         }
+        System.out.println("Number of components in graph: "+graphList.tarjansScc());
 
 
         System.out.println("\n\nAdjacency matrix graph: ");
-        GraphIntf<Integer> graphMat = new GraphAdjMat<>(nodesCount, nodes, edges, false);
+        GraphIntf<Integer> graphMat = new GraphAdjMat<>(nodesCount, nodes, edges, true);
         System.out.println("DFS: ");
         graphMat.dfs();
         System.out.println("BFS: ");
@@ -96,5 +97,7 @@ public class App
             }
             System.out.println();
         }
+
+        System.out.println("Number of components in graph: "+graphMat.tarjansScc());
     }
 }
