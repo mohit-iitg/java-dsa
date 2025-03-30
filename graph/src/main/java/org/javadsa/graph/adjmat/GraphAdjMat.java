@@ -401,6 +401,91 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         return components;
     }
 
+    @Override
+    public int kosarajuScc() {
+        // If the graph is undirected, then all the connected components
+        // are individually strongly connected.
+        if(!this.isDirected) {
+            return countNumberOfComponentsUndirected();
+        }
+
+        int components = 0;
+        // 1. Use dfs to find the order of nodes.
+        // In the current graph, use dfs traversal to find the order
+        // in which the nodes are to be considered in the components
+        // with edges reversed.
+        Stack<Integer> stk = new Stack<>();
+        dfsKosarajuFirstPass(stk);
+
+        // 2. Find the transpose of the current graph
+        Edge[][] transposeAdjMat = new Edge[this.nodesCount][this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            for(int j=0;j<this.nodesCount;j++) {
+                Edge newEdge = null;
+                if(this.adjMat[i][j] != null) {
+                    newEdge = new Edge(this.adjMat[i][j].getTo(), this.adjMat[i][j].getFrom(), this.adjMat[i][j].getWt());
+                }
+                transposeAdjMat[j][i] = newEdge;
+            }
+        }
+
+        // 3. Take the nodes in the order present in the stack with
+        // the transpose
+        boolean[] visited = new boolean[this.nodesCount];
+        while(!stk.isEmpty()) {
+            Integer top = stk.peek();
+            dfsKosarajuSecondPass(top, visited, transposeAdjMat);
+            components++;
+            while(!stk.isEmpty() && visited[stk.peek()]) {
+                stk.pop();
+            }
+        }
+        return components;
+    }
+
+    private void dfsKosarajuSecondPass(Integer node, boolean[] visited, Edge[][] transposeAdjMat) {
+        if(visited[node]) {
+            return;
+        }
+        visited[node] = true;
+        Edge[] list = transposeAdjMat[node];
+        for(Edge edge : list) {
+            if(edge!=null) {
+                dfsKosarajuSecondPass(edge.getTo(), visited, transposeAdjMat);
+            }
+        }
+    }
+
+    private void dfsKosarajuFirstPass(Stack<Integer> stk) {
+        boolean[] visited = new boolean[this.nodesCount];
+        for(int i=0;i<nodesCount;i++) {
+            for(int j=0;j<nodesCount;j++) {
+                if(this.adjMat[i][j] != null && !visited[i]) {
+                    dfsKosarajuHelper(i, visited, stk);
+                    System.out.println();
+                }
+            }
+        }
+    }
+
+    private void dfsKosarajuHelper(Integer node, boolean[] visited, Stack<Integer> stk) {
+        if(visited[node]) {
+            return;
+        }
+        visited[node] = true;
+        Edge[] list = this.adjMat[node];
+        if(list == null) {
+            stk.push(node);
+            return;
+        }
+        for(Edge edge : list) {
+            if(edge != null) {
+                dfsKosarajuHelper(edge.getTo(), visited, stk);
+            }
+        }
+        stk.push(node);
+    }
+
     private int countNumberOfComponentsUndirected() {
         boolean[] visited = new boolean[this.nodesCount];
         int components = 0;

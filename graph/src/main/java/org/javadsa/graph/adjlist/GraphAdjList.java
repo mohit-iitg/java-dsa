@@ -442,6 +442,95 @@ public class GraphAdjList<T> implements GraphIntf<T> {
         return components;
     }
 
+    @Override
+    public int kosarajuScc() {
+        // If the graph is undirected, then all the connected components
+        // are individually strongly connected.
+        if(!this.isDirected) {
+            return countNumberOfComponentsUndirected();
+        }
+
+        int components = 0;
+        // 1. Use dfs to find the order of nodes.
+        // In the current graph, use dfs traversal to find the order
+        // in which the nodes are to be considered in the components
+        // with edges reversed.
+        Stack<Node<T>> stk = new Stack<>();
+        dfsKosarajuFirstPass(stk);
+
+        // 2. Find the transpose of the current graph
+        Map<Node<T>, List<Edge>> transposeAdjList = new HashMap<>();
+        for(Node<T> node : this.nodes) {
+            transposeAdjList.put(node, new ArrayList<>());
+        }
+        for(Map.Entry<Node<T>, List<Edge>> mapEntry : this.adjList.entrySet()) {
+            List<Edge> edges = mapEntry.getValue();
+            if(edges!=null) {
+                for(Edge edge : edges) {
+                    Node<T> toNode = this.indexToNode.get(edge.getTo());
+                    List<Edge> currList = transposeAdjList.get(toNode);
+                    Edge newEdge = new Edge(edge.getTo(), edge.getFrom(), edge.getWt());
+                    currList.add(newEdge);
+                    transposeAdjList.put(toNode, currList);
+                }
+            }
+        }
+
+        // 3. Take the nodes in the order present in the stack with
+        // the transpose
+        Set<Node<T>> visited = new HashSet<>();
+        while(!stk.isEmpty()) {
+            Node<T> top = stk.peek();
+            dfsKosarajuSecondPass(top, visited, transposeAdjList);
+            components++;
+            while(!stk.isEmpty() && visited.contains(stk.peek())) {
+                stk.pop();
+            }
+        }
+        return components;
+    }
+
+    private void dfsKosarajuSecondPass(Node<T> node, Set<Node<T>> visited, Map<Node<T>, List<Edge>> transposeAdjList) {
+        if(visited.contains(node)) {
+            return;
+        }
+        visited.add(node);
+        List<Edge> list = transposeAdjList.get(node);
+        if(list == null) {
+            return;
+        }
+        for(Edge edge : list) {
+            Node<T> neighbour = this.indexToNode.get(edge.getTo());
+            dfsKosarajuSecondPass(neighbour, visited, transposeAdjList);
+        }
+    }
+
+    private void dfsKosarajuFirstPass(Stack<Node<T>> stk) {
+        Set<Node<T>> visited = new HashSet<>();
+        for(Map.Entry<Node<T>, List<Edge>> entry : this.adjList.entrySet()) {
+            if(!visited.contains(entry.getKey())) {
+                dfsKosarajuHelper(entry.getKey(), visited, stk);
+            }
+        }
+    }
+
+    private void dfsKosarajuHelper(Node<T> node, Set<Node<T>> visited, Stack<Node<T>> stk) {
+        if(visited.contains(node)) {
+            return;
+        }
+        visited.add(node);
+        List<Edge> list = this.adjList.get(node);
+        if(list == null) {
+            stk.push(node);
+            return;
+        }
+        for(Edge edge : list) {
+            Node<T> neighbour = this.indexToNode.get(edge.getTo());
+            dfsKosarajuHelper(neighbour, visited, stk);
+        }
+        stk.push(node);
+    }
+
     private int countNumberOfComponentsUndirected() {
         Set<Node<T>> visited = new HashSet<>();
         int components = 0;

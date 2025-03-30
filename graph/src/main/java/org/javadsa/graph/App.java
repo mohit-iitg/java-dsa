@@ -62,7 +62,8 @@ public class App
             }
             System.out.println();
         }
-        System.out.println("Number of components in graph: "+graphList.tarjansScc());
+        System.out.println("Number of SCC in graph: "+graphList.tarjansScc());
+        System.out.println("Kosaraju: "+graphList.kosarajuScc());
 
 
         System.out.println("\n\nAdjacency matrix graph: ");
@@ -97,7 +98,7 @@ public class App
             }
             System.out.println();
         }
-
         System.out.println("Number of components in graph: "+graphMat.tarjansScc());
+        System.out.println("Kosaraju: "+graphMat.kosarajuScc());
     }
 }
