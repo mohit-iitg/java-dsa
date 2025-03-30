@@ -490,6 +490,51 @@ public class GraphAdjList<T> implements GraphIntf<T> {
         return components;
     }
 
+    @Override
+    public Integer[] topologicalSort() {
+        if(!this.isDirected) {
+            System.out.println("Topological sort is applicable for directed graph");
+            return null;
+        }
+        if(this.containsCycle()) {
+            System.out.println("Topological sort is applicable for acyclic graph");
+            return null;
+        }
+        Stack<Node<T>> stk = new Stack<>();
+        Set<Node<T>> visited = new HashSet<>();
+
+        for(Node<T> node:this.nodes) {
+            if(!visited.contains(node)) {
+                dfsTopologicalHelper(node, visited, stk);
+            }
+        }
+
+        Integer[] result = new Integer[this.nodesCount];
+        int i=0;
+        while(!stk.isEmpty()) {
+            result[i++] = stk.pop().getIndex();
+        }
+        return result;
+    }
+
+    private void dfsTopologicalHelper(Node<T> node, Set<Node<T>> visited, Stack<Node<T>> stk) {
+        if(visited.contains(node)) {
+            return;
+        }
+        visited.add(node);
+        List<Edge> edges = this.adjList.get(node);
+        if(edges!=null) {
+            for(Edge edge:edges) {
+                Node<T> toNode = this.indexToNode.get(edge.getTo());
+                if(!visited.contains(toNode)) {
+                    dfsTopologicalHelper(toNode, visited, stk);
+                }
+            }
+        }
+
+        stk.push(node);
+    }
+
     private void dfsKosarajuSecondPass(Node<T> node, Set<Node<T>> visited, Map<Node<T>, List<Edge>> transposeAdjList) {
         if(visited.contains(node)) {
             return;

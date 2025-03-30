@@ -29,6 +29,6 @@ public interface GraphIntf<T> {
     public int tarjansScc();
     // Detect all strongly connected components
     public int kosarajuScc();
-//    // Topological sorting
-//    public Integer[] topologicalSort();
+    // Topological sorting
+    public Integer[] topologicalSort();
 }
