@@ -25,10 +25,10 @@ public interface GraphIntf<T> {
     public boolean containsNegativeCycle();
 //    // All source shortest path algorithm
     public Double[][] floydWarshall();
-//    // Detect all strongly connected components
-//    public void tarjansScc();
-//    // Detect all strongly connected components
-//    public void kosarajuScc();
+    // Detect all strongly connected components
+    public int tarjansScc();
+    // Detect all strongly connected components
+    public int kosarajuScc();
 //    // Topological sorting
 //    public Integer[] topologicalSort();
 }
