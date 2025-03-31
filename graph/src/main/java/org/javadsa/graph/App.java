@@ -119,6 +119,5 @@ public class App
                 System.out.print(topSort[i]+", ");
             }
         }
-
     }
 }

@@ -488,7 +488,7 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         }
         stk.push(node);
     }
-
+  
     private void dfsKosarajuSecondPass(Integer node, boolean[] visited, Edge[][] transposeAdjMat) {
         if(visited[node]) {
             return;
