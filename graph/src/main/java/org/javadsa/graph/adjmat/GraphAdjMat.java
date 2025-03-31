@@ -443,6 +443,52 @@ public class GraphAdjMat<T> implements GraphIntf<T> {
         return components;
     }
 
+    @Override
+    public Integer[] topologicalSort() {
+        if(!this.isDirected) {
+            System.out.println("Topological sort is applicable for directed graph");
+            return null;
+        }
+        if(this.containsCycle()) {
+            System.out.println("Topological sort is applicable for acyclic graph");
+            return null;
+        }
+        Stack<Integer> stk = new Stack<>();
+        boolean[] visited = new boolean[this.nodesCount];
+        for(int i=0;i<this.nodesCount;i++) {
+            visited[i] = false;
+        }
+
+        for(int i=0;i<this.nodesCount;i++) {
+            if(!visited[i]) {
+                dfsTopologicalHelper(i, visited, stk);
+            }
+        }
+
+        Integer[] result = new Integer[this.nodesCount];
+        int i=0;
+        while(!stk.isEmpty()) {
+            result[i++] = stk.pop();
+        }
+        return result;
+    }
+
+    private void dfsTopologicalHelper(int node, boolean[] visited, Stack<Integer> stk) {
+        if(visited[node]) {
+            return;
+        }
+        visited[node] = true;
+        Edge[] edges = this.adjMat[node];
+        for(Edge edge:edges) {
+            if(edge!=null) {
+                if(!visited[edge.getTo()]) {
+                    dfsTopologicalHelper(edge.getTo(), visited, stk);
+                }
+            }
+        }
+        stk.push(node);
+    }
+  
     private void dfsKosarajuSecondPass(Integer node, boolean[] visited, Edge[][] transposeAdjMat) {
         if(visited[node]) {
             return;

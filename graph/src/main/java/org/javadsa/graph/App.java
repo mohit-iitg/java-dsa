@@ -18,17 +18,20 @@ public class App
         Node<Integer> node5 = new Node<>(7, 1, 5);
         nodes[0] = node0; nodes[1] = node1; nodes[2] = node2; nodes[3] = node3; nodes[4] = node4; nodes[5] = node5;
 
-        Edge[] edges = new Edge[8];
+//        Edge[] edges = new Edge[8];
+        Edge[] edges = new Edge[6];
         Edge edge0 = new Edge(0, 1, 10.0);
         Edge edge1 = new Edge(1, 4, 15.0);
         Edge edge2 = new Edge(4, 3, 12.0);
         Edge edge3 = new Edge(2, 5, 1.0);
-        Edge edge4 = new Edge(2, 0, 15.0);
+//        Edge edge7 = new Edge(2, 0, 15.0);
         Edge edge5 = new Edge(3, 2, 10.0);
-        Edge edge6 = new Edge(0, 5, 2.0);
-        Edge edge7 = new Edge(3, 1, 10.0);
+        Edge edge4 = new Edge(0, 5, 2.0);
+//        Edge edge6 = new Edge(3, 1, 10.0);
         edges[0] = edge0; edges[1] = edge1; edges[2] = edge2; edges[3] = edge3;
-        edges[4] = edge4; edges[5] = edge5; edges[6] = edge6; edges[7] = edge7;
+        edges[4] = edge4; edges[5] = edge5;
+//        edges[6] = edge6;
+//        edges[7] = edge7;
 
         System.out.println("Adjacency list graph: ");
         GraphIntf<Integer> graphList = new GraphAdjList<>(nodesCount, nodes, edges, true);
@@ -64,6 +67,14 @@ public class App
         }
         System.out.println("Number of SCC in graph: "+graphList.tarjansScc());
         System.out.println("Kosaraju: "+graphList.kosarajuScc());
+        Integer[] topSort = graphList.topologicalSort();
+        if(topSort == null) {
+            System.out.println("Topsort not possible");
+        } else {
+            for (int i=0;i<topSort.length;i++) {
+                System.out.print(topSort[i]+", ");
+            }
+        }
 
 
         System.out.println("\n\nAdjacency matrix graph: ");
@@ -100,5 +111,13 @@ public class App
         }
         System.out.println("Number of components in graph: "+graphMat.tarjansScc());
         System.out.println("Kosaraju: "+graphMat.kosarajuScc());
+        topSort = graphMat.topologicalSort();
+        if(topSort == null) {
+            System.out.println("Topsort not possible");
+        } else {
+            for (int i=0;i<topSort.length;i++) {
+                System.out.print(topSort[i]+", ");
+            }
+        }
     }
 }
